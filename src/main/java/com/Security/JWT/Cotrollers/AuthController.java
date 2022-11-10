@@ -7,6 +7,7 @@ import com.Security.JWT.Repository.UserRepository;
 import com.Security.JWT.Payload.Request.LoginRequest;
 import com.Security.JWT.Payload.Request.SignupRequest;
 import com.Security.JWT.Security.Services.UserDetailsImpl;
+import com.Security.JWT.Security.Services.UserDetialsServicesImpl;
 import com.Security.JWT.Security.jwt.JwtUtils;
 import com.Security.JWT.models.ERole;
 import com.Security.JWT.models.Role;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +48,10 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    UserDetialsServicesImpl userDetialsServices;
+
+    @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Validated @RequestBody LoginRequest loginRequest){
 
         Authentication authentication = authenticationManager.authenticate(
@@ -66,7 +72,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Validated @RequestBody SignupRequest signupRequest){
 
-        if (userRepository.existsByEmail(signupRequest.getUsername())){
+        if (userRepository.existsByUsername(signupRequest.getUsername())){
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already is already taken!", 0));
