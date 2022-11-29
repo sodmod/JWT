@@ -10,6 +10,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "roles")
