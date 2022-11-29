@@ -1,11 +1,11 @@
 package com.Security.JWT.models;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.time.Instant;
 
-import static javax.persistence.GenerationType.AUTO;
+import static jakarta.persistence.GenerationType.AUTO;
 @Data
 @Entity
 public class RefreshToken {

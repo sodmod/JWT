@@ -20,7 +20,7 @@ public class RefreshTokenService {
     private UserRepository userRepository;
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
-    @Value("${}")
+    @Value("${jwt.app.jwtRefreshExpirationMs}")
     private Long refreshTokenDurationMs;
 
     public Optional<RefreshToken> findByToken (String token) {
@@ -65,6 +65,10 @@ public class RefreshTokenService {
 
     @Transactional
     public int deleteByUserId(Long userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+        return refreshTokenRepository.deleteByUser(
+                userRepository.findById(
+                        userId
+                ).get()
+        );
     }
 }

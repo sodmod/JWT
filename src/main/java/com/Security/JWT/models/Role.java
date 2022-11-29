@@ -1,15 +1,15 @@
 package com.Security.JWT.models;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
-
-import static javax.persistence.EnumType.STRING;
-import static javax.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "roles")

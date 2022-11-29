@@ -1,7 +1,7 @@
 package com.Security.JWT.Payload.Request;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Set;
@@ -10,16 +10,13 @@ import java.util.Set;
 @Setter
 public class SignupRequest {
 
-    @NotNull
+    @NonNull
     private String username;
-
-    @NotNull
+    @NonNull
     private String email;
-
-    @NotNull
+    @NonNull
     private Set<String> role;
-
-    @NotNull
+    @NonNull
     private String password;
 
 }
