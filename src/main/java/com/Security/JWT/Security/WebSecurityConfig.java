@@ -43,6 +43,11 @@ public class WebSecurityConfig {
 //        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 //    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
     public DaoAuthenticationProvider daoAuthenticationProvider(){
 
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -57,10 +62,7 @@ public class WebSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+
 
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
@@ -74,13 +76,17 @@ public class WebSecurityConfig {
 //    }
 
 
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
-                .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("api/test/**").permitAll()
+                .authorizeHttpRequests().antMatchers("/api/auth/**").permitAll()
+                .antMatchers("api/test/**").permitAll()
                 .anyRequest().authenticated();
+
+
+
         http.authenticationProvider(daoAuthenticationProvider());
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

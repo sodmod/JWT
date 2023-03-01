@@ -1,10 +1,11 @@
 package com.Security.JWT.models;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import javax.persistence.*;
+
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
