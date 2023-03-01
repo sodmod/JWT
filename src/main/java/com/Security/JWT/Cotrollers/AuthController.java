@@ -49,11 +49,16 @@ public class AuthController {
     @Autowired
     RefreshTokenService refreshTokenService;
 
-    @PostMapping("/signIn")
+    @PostMapping(value = "/signIn")
     public ResponseEntity<?> authenticateUser(@Validated @RequestBody LoginRequest loginRequest){
+
+        System.out.println("Okay step1");
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+        System.out.println("step2");
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -80,7 +85,7 @@ public class AuthController {
         );
     }
 
-    @PostMapping("/refreshToken")
+    @PostMapping(value = "/refreshToken")
     public ResponseEntity<?> refreshToken(@Validated @RequestBody TokenRefreshRequest request){
 //        This expression below will get the refreshToken from the request header and store it as a string variable 'requestRefreshToken'
         String requestRefreshToken = request.getRefreshToken();
@@ -89,28 +94,13 @@ public class AuthController {
 
 
         return refreshTokenService.
-                findByToken(
-                        requestRefreshToken
-                )
-                .map(
-                        refreshTokenService::verifyExpiration
-                )
-                .map(
-                        RefreshToken::getUser
-                )
-                .map(
-                        user-> {
-                            String token = jwtUtils.generateTokenFromUsername(
-                                    user.getUsername()
-                            );
-                            return ResponseEntity.ok(
-                                    new TokenRefreshResponse(
-                                            token,
-                                            requestRefreshToken
-                                    )
-                            );
-                        }
-                        )
+                findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user-> {
+                            String token = jwtUtils.generateTokenFromUsername(user.getUsername());
+                            return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
                 .orElseThrow(
                         ()-> new TokenRefreshException(
                                 requestRefreshToken,
