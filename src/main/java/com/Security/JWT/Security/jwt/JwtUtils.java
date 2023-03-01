@@ -42,26 +42,10 @@ public class JwtUtils {
     public String generateTokenFromUsername(String username){
         return Jwts
                 .builder()
-                .setSubject(
-                        (
-                                username
-                        )
-                )
-                .setIssuedAt(
-                        new Date()
-                )
-                .setExpiration(
-                        new Date(
-                                (
-                                        new Date()
-                                )
-                                        .getTime() + jwtExpirationMs
-                        )
-                )
-                .signWith(
-                        HS512, jwtSecret
-                )
-                .compact();
+                .setSubject((username))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(HS512, jwtSecret).compact();
     }
 
     public String getUserNameFromJwtToken(String token){

@@ -86,7 +86,6 @@ public class AuthController {
     }
 
     @PostMapping(value = "/refreshToken")
-
     public ResponseEntity<?> refreshToken(@Validated @RequestBody TokenRefreshRequest request){
 //        This expression below will get the refreshToken from the request header and store it as a string variable 'requestRefreshToken'
         String requestRefreshToken = request.getRefreshToken();
@@ -95,28 +94,13 @@ public class AuthController {
 
 
         return refreshTokenService.
-                findByToken(
-                        requestRefreshToken
-                )
-                .map(
-                        refreshTokenService::verifyExpiration
-                )
-                .map(
-                        RefreshToken::getUser
-                )
-                .map(
-                        user-> {
-                            String token = jwtUtils.generateTokenFromUsername(
-                                    user.getUsername()
-                            );
-                            return ResponseEntity.ok(
-                                    new TokenRefreshResponse(
-                                            token,
-                                            requestRefreshToken
-                                    )
-                            );
-                        }
-                        )
+                findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user-> {
+                            String token = jwtUtils.generateTokenFromUsername(user.getUsername());
+                            return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
                 .orElseThrow(
                         ()-> new TokenRefreshException(
                                 requestRefreshToken,
