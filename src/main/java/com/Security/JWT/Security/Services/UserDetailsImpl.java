@@ -21,6 +21,7 @@ public class UserDetailsImpl implements UserDetails{
 
     private static final long serialVersionUID = 1L;
     private Long id;
+    private org.springframework.security.core.userdetails.User use;
     private String username;
     private String email;
 
